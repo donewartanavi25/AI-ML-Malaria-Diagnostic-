@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaria AI Diagnostic Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+        }
+        .navbar {
+            background-color: #0d6efd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .upload-box {
+            border: 2px dashed #aecde8;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f8fbff;
+        }
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .result-badge {
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            border-radius: 8px;
+        }
+        .preview-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #fff;
+            max-height: 250px;
+            object-fit: contain;
+        }
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                🔬 MalariaVision AI
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold">Automated Malaria Detection</h2>
+                <p class="text-muted">Upload a blood smear microscopic image for rapid AI analysis.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center g-4">
+            <div class="col-md-5">
+                <div class="card h-100 p-4">
+                    <h5 class="card-title fw-bold mb-3">1. Upload Image</h5>
+                    <form action="/" method="POST" enctype="multipart/form-data">
+                        <div class="upload-box mb-4">
+                            <div class="upload-icon">📁</div>
+                            <h6 class="fw-bold">Select Cell Image</h6>
+                            <p class="text-muted small mb-3">Supports JPG, PNG, JPEG</p>
+                            <input class="form-control" type="file" name="file" accept="image/*" required>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2 fw-bold" type="submit">
+                            Run Diagnostics
+                        </button>
+                    </form>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card h-100 p-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    
+                    {% if prediction %}
+                        <h5 class="card-title fw-bold mb-4 w-100 text-start">2. Analysis Results</h5>
+                        
+                        {% if prediction == 'Uninfected' %}
+                            <div class="badge bg-success result-badge mb-4 w-100 py-3 shadow-sm">
+                                Diagnosis: {{ prediction }}
+                            </div>
+                        {% else %}
+                            <div class="badge bg-danger result-badge mb-4 w-100 py-3 shadow-sm">
+                                Diagnosis: {{ prediction }}
+                            </div>
+                        {% endif %}
+
+                        <p class="text-muted small mb-2">Uploaded Scan:</p>
+                        <img src="{{ image_path }}" class="preview-img" alt="Uploaded Cell Image">
+                        
+                    {% else %}
+                        <div class="text-muted">
+                            <div style="font-size: 50px; opacity: 0.2; margin-bottom: 15px;">🔬</div>
+                            <p>Awaiting image upload...</p>
+                            <p class="small">Diagnostic results will appear here.</p>
+                        </div>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <small>&copy; 2026 Machine Learning College Project. All rights reserved.</small>
+        </div>
+    </footer>
+
+</body>
+</html>
